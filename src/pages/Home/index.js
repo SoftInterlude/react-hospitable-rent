@@ -1,86 +1,78 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
+// 导入业务组件
+import News from '../News'
+import Index from '../Index'
+import HouseList from '../HouseList'
+import Profile from '../Profile'
 // 导入TabBar组件
 import { TabBar } from 'antd-mobile';
-import { Outlet, useNavigate } from 'react-router-dom'
 // 导入组件自己的样式
 import './index.css'
 
 
-// 抽象NavItem数据
-const navItems = [
+// tabbar数据
+const tabItems = [
   {
     icon: 'icon-ind',
     title: '主页',
-    path: '../home'
+    path: '/home'
   },
   {
     icon: 'icon-findHouse',
     title: '找房',
-    path: 'houselist'
+    path: '/home/list'
   },
   {
     icon: 'icon-infom',
     title: '资讯',
-    path: 'news'
+    path: '/home/news'
   },
   {
     icon: 'icon-my',
     title: '我的',
-    path: 'profile'
+    path: '/home/profile'
   },
 ]
 
-// 给TabBar包一层组件，原因是要兼容Ant Design Mobile V2.3和React Router V6必须在函数组件中实现声明式导航
-function HomeWrapper(props) {
-  const navigate = useNavigate()
+export default class Home extends React.Component {
+  state = {
+    selectedTab: this.props.location.pathname
+  }
 
-  function renderTabBarItems() {
-    const { selectedTab, onPressCb } = props
-    return navItems.map(item => {
+  renderTabBarItems() {
+    return tabItems.map(item => {
       const { icon, title, path } = item
       return <TabBar.Item
         icon={<i className={`iconfont ${icon}`} />}
         selectedIcon={<i className={`iconfont ${icon}`} />}
         title={title}
         key={title}
-        selected={selectedTab === path}
+        selected={this.state.selectedTab === path}
         onPress={() => {
-          onPressCb(path)
-          navigate(path)
+          this.setState({
+            selectedTab: path
+          })
+          // 路由跳转
+          this.props.history.push(path)
         }}
       />
     })
   }
 
-  return <div className="home">
-    <Outlet />
-    <TabBar
-      tintColor="#21b97a"
-      barTintColor="white"
-      noRenderContent
-    >
-      {renderTabBarItems()}
-    </TabBar>
-  </div>
-}
-
-export default class Home extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedTab: 'index'
-    }
-  }
-
-  onPressCb = (path) => {
-    this.setState(() => {
-      return {
-        selectedTab: path
-      }
-    })
-  }
-
   render() {
-    return <HomeWrapper selectedTab={this.state.selectedTab} onPressCb={this.onPressCb} />
+    return <div className="home">
+      <Route path="/home/news" component={News} />
+      <Route exact path="/home" component={Index} />
+      <Route path="/home/list" component={HouseList} />
+      <Route path="/home/profile" component={Profile} />
+      <TabBar
+        tintColor="#21b97a"
+        barTintColor="white"
+        noRenderContent
+      >
+        {this.renderTabBarItems()}
+      </TabBar>
+    </div>
   }
 }
