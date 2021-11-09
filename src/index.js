@@ -17,14 +17,14 @@ import './index.css'
 import './assets/fonts/iconfont.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-
 ReactDOM.render(
   <Router>
     {/* 配置路由 */}
     <Routes>
       <Route path="/" element={<App />}>
-        <Route path="home/" element={<Home />}>
-          <Route path="index" element={<Index />} />
+        <Route index element={<Home />} />
+        <Route path="home" element={<Home />}>
+          <Route index element={<Index />} />
           <Route path="houselist" element={<HouseList />} />
           <Route path="news" element={<News />} />
           <Route path="profile" element={<Profile />} />
