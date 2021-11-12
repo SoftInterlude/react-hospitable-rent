@@ -40,6 +40,15 @@ export default class Home extends React.Component {
     selectedTab: this.props.location.pathname
   }
 
+  // 修复从首页导航菜单进入子路由，首页部分更新时，对应tab不高亮的问题
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({
+        selectedTab: this.props.location.pathname
+      })
+    }
+  }
+
   renderTabBarItems() {
     return tabItems.map(item => {
       const { icon, title, path } = item

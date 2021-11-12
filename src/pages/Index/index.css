@@ -1,0 +1,22 @@
+.index .swiper {
+  height: 212px;
+}
+
+.index .nav {
+  padding: 10px 0;
+  background-color: #fff;
+}
+
+.index .nav img {
+  width: 45px;
+}
+
+.index .nav h2 {
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 7px;
+}
+
+.index .nav .am-flexbox-item {
+  text-align: center;
+}
