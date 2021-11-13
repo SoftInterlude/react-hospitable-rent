@@ -79,3 +79,7 @@
 .index .groups .am-grid .am-flexbox-align-stretch .am-flexbox-item:first-child {
   margin-right: 10px;
 }
+
+.index .news .news-item img {
+  width: 50px;
+}

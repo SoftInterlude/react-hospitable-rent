@@ -1,5 +1,5 @@
 import React from 'react';
-import { Carousel, Flex, Grid } from 'antd-mobile';
+import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 import Axios from 'axios';
 // 导入导航菜单
 import Nav1 from '../../assets/img/nav-1.png'
@@ -43,6 +43,7 @@ export default class Index extends React.Component {
     swipers: [],
     isSwiperLoaded: false,
     groups: [],
+    news: [],
   }
 
   // 获取轮播图数据
@@ -71,9 +72,24 @@ export default class Index extends React.Component {
     })
   }
 
+  async getNews() {
+    const { data: res } = await Axios.get(
+      `${baseUrl}/home/news`,
+      {
+        params: {
+          area: 'AREA%7C88cff55c-aaa4-e2e0'
+        }
+      }
+    )
+    this.setState({
+      news: res.body
+    })
+  }
+
   componentDidMount() {
     this.getSwipers()
     this.getGroups()
+    this.getNews()
   }
 
   // 渲染轮播图
@@ -153,6 +169,26 @@ export default class Index extends React.Component {
             square={false}
             renderItem={this.renderGroups}
           />
+        </div>
+        <div className="news">
+          <WingBlank size="md">
+            <h3>租房资讯</h3>
+            {
+              this.state.news.map(item => (
+                <Flex justify="between" key={item.key}>
+                  <img src={baseUrl + item.imgSrc} />
+                  <Flex direction="column" justify="between">
+                    <h4>{item.title}</h4>
+                    <Flex direction="row" justify="between">
+                      <span>{item.from}</span>
+                      <span>{item.date}</span>
+                    </Flex>
+                  </Flex>
+                </Flex>
+
+              ))
+            }
+          </WingBlank>
         </div>
       </div>
     );
