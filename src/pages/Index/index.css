@@ -3,7 +3,7 @@
 }
 
 .index .nav {
-  padding: 10px 0;
+  padding: 10px;
   background-color: #fff;
 }
 
@@ -19,4 +19,63 @@
 
 .index .nav .am-flexbox-item {
   text-align: center;
+}
+
+.index .groups {
+  padding: 10px;
+  background-color: #f5f5f9;
+}
+
+.index .groups h3 {
+  position: relative;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  vertical-align: text-top;
+}
+
+.index .groups .more {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.index .groups .group-item img {
+  width: 65px;
+}
+
+.index .groups .group-item .title {
+  font-weight: 700;
+}
+
+.index .groups .group-item .desc {
+  font-size: 13px;
+}
+
+/* 覆盖默认样式 */
+.index .groups .am-grid .am-flexbox {
+  background: inherit;
+}
+
+.index .groups .am-flexbox .am-flexbox-align-center {
+  align-items: flex-start;
+}
+
+.index .groups .am-grid .am-flexbox .am-flexbox-item {
+  text-align: center;
+}
+
+.index .groups .am-grid .am-flexbox-align-stretch:first-child {
+  margin-bottom: 10px;
+}
+
+.index .groups .am-grid .am-flexbox-align-stretch .am-flexbox-item {
+  background-color: #fff;
+}
+
+.index .groups .am-grid .am-flexbox-align-stretch .am-flexbox-item:first-child {
+  margin-right: 10px;
 }
