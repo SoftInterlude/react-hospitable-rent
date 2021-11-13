@@ -9,7 +9,7 @@ import Nav4 from '../../assets/img/nav-4.png'
 // 导入组件样式
 import './index.css'
 
-const baseUrl = 'http://localhost:8080'
+const baseUrl = 'http://192.168.1.6:8080'
 
 const navItems = [
   {
@@ -144,6 +144,24 @@ export default class Index extends React.Component {
     )
   }
 
+  //渲染房屋资讯
+  renderNews() {
+    return this.state.news.map(item => (
+      <div className="news-item" key={item.key}>
+        <div className="img_wrapper">
+          <img src={baseUrl + item.imgSrc} alt="" />
+        </div>
+        <Flex className="content" direction="column" justify="between">
+          <h4 className="title">{item.title}</h4>
+          <Flex className="info" justify="between">
+            <span>{item.from}</span>
+            <span>{item.date}</span>
+          </Flex>
+        </Flex>
+      </div>
+    ))
+  }
+
   render() {
     return (
       <div className="index">
@@ -151,6 +169,24 @@ export default class Index extends React.Component {
         {/* 这里要注意修复轮播图不能自动播放的bug, 原因是获取轮播图数据是异步的，数据还没取到组件就先加载好了 */}
         <div className="swiper">
           {this.state.isSwiperLoaded ? <Carousel autoplay infinite>{this.renderSwipers()}</Carousel> : ''}
+          {/* 顶部搜索栏 */}
+          <Flex className="search-box">
+            {/* 左侧输入区域 */}
+            <Flex className="search">
+              {/* 位置 */}
+              <div className="location" onClick={() => this.props.history.push('/citylist')}>
+                <span className="name">上海</span>
+                <i className="iconfont icon-arrow"></i>
+              </div>
+              {/* 搜索表单 */}
+              <div className="form" onClick={() => this.props.history.push('/search')}>
+                <i className="iconfont icon-seach"></i>
+                <span className="text">请输入小区或地址</span>
+              </div>
+            </Flex>
+            {/* 右侧地图找房按钮 */}
+            <i className="iconfont icon-map" onClick={() => this.props.history.push('/map')}></i>
+          </Flex>
         </div>
         {/* 导航菜单 */}
         <Flex className="nav">
@@ -172,21 +208,9 @@ export default class Index extends React.Component {
         </div>
         <div className="news">
           <WingBlank size="md">
-            <h3>租房资讯</h3>
+            <h3 className="news-title">房屋资讯</h3>
             {
-              this.state.news.map(item => (
-                <Flex justify="between" key={item.key}>
-                  <img src={baseUrl + item.imgSrc} />
-                  <Flex direction="column" justify="between">
-                    <h4>{item.title}</h4>
-                    <Flex direction="row" justify="between">
-                      <span>{item.from}</span>
-                      <span>{item.date}</span>
-                    </Flex>
-                  </Flex>
-                </Flex>
-
-              ))
+              this.renderNews()
             }
           </WingBlank>
         </div>
