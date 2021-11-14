@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
-import Axios from 'axios';
+import { httpGet, baseURL } from '../../network'
 // 导入导航菜单
 import Nav1 from '../../assets/img/nav-1.png'
 import Nav2 from '../../assets/img/nav-2.png'
@@ -8,8 +8,7 @@ import Nav3 from '../../assets/img/nav-3.png'
 import Nav4 from '../../assets/img/nav-4.png'
 // 导入组件样式
 import './index.css'
-
-const baseUrl = 'http://localhost:8080'
+import { getCurrentCity } from '../../utils'
 
 const navItems = [
   {
@@ -49,7 +48,7 @@ export default class Index extends React.Component {
 
   // 获取轮播图数据
   async getSwipers() {
-    const { data: res } = await Axios.get(`${baseUrl}/home/swiper`)
+    const { data: res } = await httpGet('/home/swiper')
     this.setState(() => {
       return {
         swipers: res.body,
@@ -60,12 +59,10 @@ export default class Index extends React.Component {
 
   // 获取租房小组数据
   async getGroups() {
-    const { data: res } = await Axios.get(
-      `${baseUrl}/home/groups`,
+    const { data: res } = await httpGet(
+      '/home/groups',
       {
-        params: {
-          area: 'AREA%7C88cff55c-aaa4-e2e0'
-        }
+        area: 'AREA%7C88cff55c-aaa4-e2e0'
       }
     )
     this.setState({
@@ -74,12 +71,10 @@ export default class Index extends React.Component {
   }
 
   async getNews() {
-    const { data: res } = await Axios.get(
-      `${baseUrl}/home/news`,
+    const { data: res } = await httpGet(
+      '/home/news',
       {
-        params: {
-          area: 'AREA%7C88cff55c-aaa4-e2e0'
-        }
+        area: 'AREA%7C88cff55c-aaa4-e2e0'
       }
     )
     this.setState({
@@ -87,25 +82,14 @@ export default class Index extends React.Component {
     })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getSwipers()
     this.getGroups()
     this.getNews()
     // 获取当前城市定位
-    const curCity = new window.BMap.LocalCity()
-    curCity.get(async res => {
-      const { data } = await Axios.get(
-        `${baseUrl}/area/info`,
-        {
-          params: {
-            name: res.name
-          }
-        }
-      )
-      console.log(data)
-      this.setState({
-        curCityName: data.body.label
-      })
+    const curCityName = await getCurrentCity()
+    this.setState({
+      curCityName
     })
   }
 
@@ -119,7 +103,7 @@ export default class Index extends React.Component {
           style={{ display: 'inline-block', width: '100%', height: 212 }}
         >
           <img
-            src={baseUrl + item.imgSrc}
+            src={baseURL + item.imgSrc}
             alt=""
             style={{ width: '100%', verticalAlign: 'top' }}
             onLoad={() => {
@@ -156,7 +140,7 @@ export default class Index extends React.Component {
           <span className="desc">{item.desc}</span>
         </Flex.Item>
         <Flex.Item>
-          <img className="group-item-img" src={baseUrl + item.imgSrc} />
+          <img className="group-item-img" src={baseURL + item.imgSrc} />
         </Flex.Item>
       </Flex>
     )
@@ -167,7 +151,7 @@ export default class Index extends React.Component {
     return this.state.news.map(item => (
       <div className="news-item" key={item.key}>
         <div className="img_wrapper">
-          <img src={baseUrl + item.imgSrc} alt="" />
+          <img src={baseURL + item.imgSrc} alt="" />
         </div>
         <Flex className="content" direction="column" justify="between">
           <h4 className="title">{item.title}</h4>
