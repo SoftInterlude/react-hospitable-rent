@@ -6,8 +6,8 @@ import './index.css'
 export default class Map extends React.Component {
 
   componentDidMount() {
-    const map = new window.BMapGL.Map('container')
-    const point = new window.BMapGL.Point(116.404, 39.915)
+    const map = new window.BMap.Map('container')
+    const point = new window.BMap.Point(116.404, 39.915)
     map.centerAndZoom(point, 15)
   }
 

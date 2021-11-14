@@ -7,7 +7,7 @@ body {
   background-color: #fff;
 }
 
-html, body, #root, .app{
+html, body, #root, .App{
   height: 100%;
 }
 

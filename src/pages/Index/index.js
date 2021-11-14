@@ -9,7 +9,7 @@ import Nav4 from '../../assets/img/nav-4.png'
 // 导入组件样式
 import './index.css'
 
-const baseUrl = 'http://192.168.1.6:8080'
+const baseUrl = 'http://localhost:8080'
 
 const navItems = [
   {
@@ -44,6 +44,7 @@ export default class Index extends React.Component {
     isSwiperLoaded: false,
     groups: [],
     news: [],
+    curCityName: '上海'
   }
 
   // 获取轮播图数据
@@ -90,6 +91,22 @@ export default class Index extends React.Component {
     this.getSwipers()
     this.getGroups()
     this.getNews()
+    // 获取当前城市定位
+    const curCity = new window.BMap.LocalCity()
+    curCity.get(async res => {
+      const { data } = await Axios.get(
+        `${baseUrl}/area/info`,
+        {
+          params: {
+            name: res.name
+          }
+        }
+      )
+      console.log(data)
+      this.setState({
+        curCityName: data.body.label
+      })
+    })
   }
 
   // 渲染轮播图
@@ -111,7 +128,8 @@ export default class Index extends React.Component {
               this.setState({ imgHeight: 'auto' });
             }}
           />
-        </a>)
+        </a>
+      )
     )
   }
 
@@ -175,7 +193,7 @@ export default class Index extends React.Component {
             <Flex className="search">
               {/* 位置 */}
               <div className="location" onClick={() => this.props.history.push('/citylist')}>
-                <span className="name">上海</span>
+                <span className="name">{this.state.curCityName}</span>
                 <i className="iconfont icon-arrow"></i>
               </div>
               {/* 搜索表单 */}
