@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavBar } from 'antd-mobile'
 import Axios from 'axios'
+import { getCurrentCity } from '../../utils'
 
 
 // 导入组件样式
@@ -53,7 +54,11 @@ export default class CityList extends React.Component {
     const { data: hot } = await Axios.get(`${baseUrl}/area/hot`)
     cityList['hot'] = hot.body
     cityIndex.unshift('hot')
-    console.log(cityList, cityIndex)
+    // 添加当前定位城市数据
+    const curCity = await getCurrentCity()
+    cityList['#'] = curCity
+    cityIndex.unshift('#')
+    console.log(cityList, cityIndex, curCity)
   }
 
   componentDidMount() {

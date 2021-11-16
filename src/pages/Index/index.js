@@ -87,7 +87,7 @@ export default class Index extends React.Component {
     this.getGroups()
     this.getNews()
     // 获取当前城市定位
-    const curCityName = await getCurrentCity()
+    const { label: curCityName } = await getCurrentCity()
     this.setState({
       curCityName
     })
